@@ -1,7 +1,7 @@
 var container;
 
 var camera, scene, renderer;
-alea = new Alea();
+var alea = new Alea();
 
 initDisplay();
 animate();
@@ -9,13 +9,9 @@ animate();
 
 document.getElementById('container').onclick = function(event) {
     if (alea.isPlaying) {
-        alea.audioSource.stop();
-        alea.isPlaying = false;
-    } else if (alea.audioContext !== undefined) {
+        alea.stopSound();
+    }  else if (alea.url && !alea.isLoading) {
         alea.playSound();
-        alea.isPlaying = true;
-    }  else if (alea.file && !alea.loading && alea.audioContext === undefined) {
-        alea.initAudio();
     }
 };
 
@@ -26,26 +22,43 @@ function keyFilter(event) {
     }
 }
 
-function initALea(audio) {
-    if (alea.isPlaying) {
-        alea.audioSource.stop();
-        alea.isPlaying = false;
-    }
-    alea.file = audio
+function aleaLoadSound(audio) {
+    alea.stopSound();
+    alea.url = audio
     alea.initAudio();
 }
 
 function initDisplay() {
-    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera.position.z = 600;
+    if (isMob()) {
+        document.body.innerHTML += "<div id=mobile><h3>Mobile unsupported for now...</h3><h4>We'll see you on desktop ;)</h4></div>";
+        document.getElementById('form').style.display = "none"
+    } else {
+        camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
+        camera.position.z = 600;
 
-    scene = new THREE.Scene();
+        scene = new THREE.Scene();
 
-    renderer = new THREE.WebGLRenderer();
-    renderer.setClearColor( 0x000000 );
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.getElementById('container').appendChild( renderer.domElement );
+        renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor( 0x000000 );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        document.getElementById('container').appendChild( renderer.domElement );
+    }
+}
+
+function isMob() { 
+    if( navigator.userAgent.match(/Android/i)
+        || navigator.userAgent.match(/webOS/i)
+        || navigator.userAgent.match(/iPhone/i)
+        || navigator.userAgent.match(/iPad/i)
+        || navigator.userAgent.match(/iPod/i)
+        || navigator.userAgent.match(/BlackBerry/i)
+        || navigator.userAgent.match(/Windows Phone/i)
+    ){
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function animate() {
@@ -54,14 +67,13 @@ function animate() {
 }
 
 function render() {
-
     if (alea.isPlaying) {
         alea.detectBeat();
 
         var radius = Math.floor(alea.bass/150);
 
         var outerRadius = Math.floor(alea.volume/100)
-        console.log(radius, outerRadius)
+        //console.log(radius, outerRadius)
 
         var beat = radius > 120
         if (beat) {

@@ -1,8 +1,14 @@
+@font-face { 
+    font-family: Circular; 
+    src: url('/font/CircularStd-Book.ttf');
+    font-weight:100; 
+}
+
 body { 
     margin: 0;
     overflow: hidden;
     background-color: #000000;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: Circular, Helvetica, sans-serif;
 }
 
 canvas { 
@@ -17,7 +23,7 @@ form {
     top: 20px;
 }
 
-#result { 
+#result {
     z-index: 10;
     background-color: #FFFFFF;
     position: fixed ;
@@ -38,7 +44,20 @@ form {
 #container {
     z-index: 1;
     width: 100%;
-    height: 100% 
+    height: 100%;
+}
+
+#mobile {
+    width: 100%;
+    height: 20%;
+    color: #FFFFFF;
+    text-align: center;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;   
 }
 
 #notification {
@@ -48,9 +67,17 @@ form {
     left: 0px;
     top: 0px;
     width: 100%;
+    height: 60px;
+    line-height: 60px;
     color: #212121;
     font-size: 12px;
     cursor: pointer;
     text-align: center;
     visibility: hidden;
+}
+
+#notification p {
+    margin: 0;
+    vertical-align: center;
+    font-size: 150%;
 }
