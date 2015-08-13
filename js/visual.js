@@ -95,8 +95,8 @@ function playing() {
     } 
     if (alea.beatAmount > 2) {
         alea.beatAmount = alea.beatAmount - 0.4;
-        scene.position.x = getRandomInt( -alea.beatAmount, alea.beatAmount, 0)
-        scene.position.y = getRandomInt( -alea.beatAmount, alea.beatAmount, 0)
+        //scene.position.x = getRandomInt( -alea.beatAmount, alea.beatAmount, 0)
+        //scene.position.y = getRandomInt( -alea.beatAmount, alea.beatAmount, 0)
         scene.rotation.y = getRandom(-0.1, 0.1, 0);
         scene.rotation.x = getRandom(-0.1, 0.1, 0);
     } else {
