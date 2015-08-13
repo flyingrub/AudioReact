@@ -61,6 +61,9 @@ function isMob() {
     }
 }
 
+var lineNumber = 3;
+var geometry;
+
 function animate() {
     requestAnimationFrame( animate );
     render();
@@ -68,50 +71,93 @@ function animate() {
 
 function render() {
     if (alea.isPlaying) {
-        alea.detectBeat();
-
-        var radius = Math.floor(alea.bass/150);
-
-        var outerRadius = Math.floor(alea.volume/100)
-        //console.log(radius, outerRadius)
-
-        var beat = radius > 120
-        if (beat) {
-            scene.rotation.z += 0.01
-        }
-        var geometry = new THREE.RingGeometry( radius, outerRadius + radius , 3);
-        var material = new THREE.MeshDepthMaterial();
-        
-        var form = new THREE.Mesh( geometry, material );
-        scene.add( form );
-        renderer.render( scene, camera );
-        scene.remove( form );
-
-        geometry.dispose();
-        material.dispose();
+        playing()
     } else if (alea.isLoading) {
-        scene.rotation.z -= 0.05
-        
-        var geometry = new THREE.RingGeometry( 50, 100 , 3);
-        var material = new THREE.MeshDepthMaterial();
-        
-        var form = new THREE.Mesh( geometry, material );
-        scene.add( form );
-        renderer.render( scene, camera );
-        scene.remove( form );
+        loading()
     } else {
-        scene.rotation.z += 0.002
-        
-        var geometry = new THREE.RingGeometry( 50, 100 , 3);
-        var material = new THREE.MeshDepthMaterial();
-        
-        var form = new THREE.Mesh( geometry, material );
-        scene.add( form );
-        renderer.render( scene, camera );
-        scene.remove( form );
+        idling()
     }
+}
 
+function beat() {
+    lineNumber = getRandomInt(3, 9, lineNumber);
+}
 
+function playing() {
+    alea.detectBeat();
+
+    radius = Math.floor(alea.smoothedBass);
+    outer = Math.floor(alea.smoothedVolume) + radius
+
+    if (alea.beat) {
+        beat();
+        scene.rotation.z += 20;
+    } 
+    if (alea.beatAmount > 2) {
+        alea.beatAmount = alea.beatAmount - 0.4;
+        scene.position.x = getRandomInt( -alea.beatAmount, alea.beatAmount, 0)
+        scene.position.y = getRandomInt( -alea.beatAmount, alea.beatAmount, 0)
+        scene.rotation.y = getRandom(-0.1, 0.1, 0);
+        scene.rotation.x = getRandom(-0.1, 0.1, 0);
+    } else {
+        scene.rotation.y = 0;
+        scene.rotation.x = 0;
+        scene.position.x = 0
+        scene.position.y = 0
+    }
+    geometry = new THREE.RingGeometry( radius, outer , lineNumber);   
+
+    var material = new THREE.MeshDepthMaterial();
+    
+    var form = new THREE.Mesh( geometry, material );
+    scene.add( form );
+    renderer.render( scene, camera );
+    scene.remove( form );
+
+    geometry.dispose();
+    material.dispose();
+}
+
+function loading() {
+    scene.rotation.z -= 0.05
+    
+    var geometry = new THREE.RingGeometry( 50, 100 , 3);
+    var material = new THREE.MeshDepthMaterial();
+    
+    var form = new THREE.Mesh( geometry, material );
+    scene.add( form );
+    renderer.render( scene, camera );
+    scene.remove( form );
+}
+
+function idling() {
+    scene.rotation.z += 0.002
+    
+    var geometry = new THREE.RingGeometry( 50, 100 , 3);
+    var material = new THREE.MeshDepthMaterial();
+    
+    var form = new THREE.Mesh( geometry, material );
+    scene.add( form );
+    renderer.render( scene, camera );
+    scene.remove( form );
+}
+
+function getRandomInt(min, max, not) {
+    var rand;
+    rand = Math.floor(Math.random() * (max - min)) + min;
+    while (rand == not) {
+        rand = Math.floor(Math.random() * (max - min)) + min;
+    }
+    return rand;
+}
+
+function getRandom(min, max, not) {
+    var rand;
+    rand = Math.random() * (max - min) + min;
+    while (rand == not) {
+        rand = Math.random() * (max - min) + min;
+    }
+    return rand;
 }
 
 window.onresize = function(event) {

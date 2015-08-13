@@ -1,4 +1,5 @@
 function Alea() {
+    // Playing
     var aela = this;
     this.audioContext;
     this.isPlaying = false;
@@ -7,10 +8,6 @@ function Alea() {
     this.analyser;
     this.isLoading = false;
     this.url;
-
-    this.bass, this.mid, this.high;
-    this.volume;
-
 
     this.initAudio = function() {
         console.log("init")
@@ -25,10 +22,11 @@ function Alea() {
 
     this.stopSound = function() {
         console.log("stop")
-        if (this.audioSource !== undefined){
+        if (this.audioSource){
             this.audioSource.stop();
         }
         this.isPlaying = false;
+        this.firstTIme = true
     }
 
     this.playSound = function() {
@@ -40,6 +38,9 @@ function Alea() {
         this.audioSource = this.audioContext.createBufferSource();
         this.audioSource.buffer = this.buffer;
         this.audioSource.connect(this.audioContext.destination);
+        this.audioSource.onended = function() {
+            this.isPlaying = false;
+        }
                 
         // Analyser
         this.analyser = this.audioContext.createAnalyser();
@@ -75,6 +76,17 @@ function Alea() {
 
     };
 
+    // Analysing
+    this.bass, this.mid, this.high;
+    this.volume;
+    this.smoothedVolume;
+    this.smoothedBass;
+    this.firstTIme;
+    this.thresold;
+    this.beat;
+    this.hold=100;
+    this.beatAmount;
+
     this.detectBeat = function() {
         this.bass = 0, this.mid = 0, this.high = 0;
         this.volume = 0;
@@ -84,11 +96,42 @@ function Alea() {
         this.analyser.getByteFrequencyData(freqData);
 
         for(var i = 0; i < bufferLength; i++) {
-            if (i < 100){
+            if (i < 20){
                 this.bass += freqData[i]
             }
             this.volume += freqData[i];
         }
-        this.volume = this.volume / 5
+
+        this.bass = this.bass / 20;
+        this.volume = this.volume / bufferLength;
+
+        if (this.firstTIme) {
+            this.firstTIme = false;
+            this.thresold = this.volume+10;
+            this.smoothedVolume = this.volume;
+            this.smoothedBass = this.bass;
+        } else {
+            this.smoothedVolume += (this.volume  - this.smoothedVolume) * 0.2;
+            this.smoothedBass += (this.bass  - this.smoothedBass) * 0.2;
+        }
+        if (this.smoothedVolume > this.thresold) {
+             if (this.hold <= 0) {
+                this.beat = true
+                this.beatAmount = ((this.smoothedVolume - this.thresold) * (this.smoothedVolume - this.thresold)) * 0.5 + 10
+            } else {
+                this.beat = false
+            }
+            this.hold = 50
+            this.thresold = this.smoothedVolume;
+        } else {
+            if (this.hold > 0) {
+                this.hold -=1;
+            } else {
+                this.thresold = this.thresold - 0.2
+            }
+            this.beat = false
+        }
+        //console.log("beatdetection", this.beat, this.hold, this.thresold)
+        
     };
 }
