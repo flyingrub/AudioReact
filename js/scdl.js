@@ -1,4 +1,5 @@
 const cID = "95a4c0ef214f2a4a0852142807b54b35"
+const cID2 = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
 
 var latestSongId;
 var scAPI;
@@ -7,9 +8,11 @@ initSC();
 
 function initSC(){
     scAPI = new ScAPI(cID)
-    id = window.location.hash.replace('#','');
-    if (id) {
-        playThisSCsong(id);
+    param = window.location.hash.replace('#','');
+    if (param.search("user:") != -1) {
+        displayUserFav(param.replace("user:",''));
+    } else if (param.search("song:") != -1) {
+        playThisSCsong(param.replace("song:",''))
     }
 }
 
@@ -29,6 +32,7 @@ function ScAPI(clientId) {
         }
 
         url = apiURL + endpoint + "?client_id=" + this.clientId
+
         if (parameter !== undefined) {
             if (parameter.q){
                 url = url + "&q=" + parameter.q
@@ -46,30 +50,58 @@ function ScAPI(clientId) {
                 call(req.response)
             }           
         }
-        req.onerror = function() {
-            alert("error with scAPI");
+        req.onerror = function(e) {
+            console.warn(e)
         }
         req.send();
 
     }
 }
 
-function displaySong() {
-    var song = document.getElementById("song").value
+function displaySongs() {
+    var search = document.getElementById("search").value
 
-    scAPI.get('/tracks', { q: song, limit: 200 }, function(tracks) {
-        document.getElementById("result").style.visibility = "visible";
+    document.getElementById("spinner").style.visibility = "visible"
+    scAPI.get('/tracks', { q: search, limit: 200 }, function(tracks) {
+        slideout.open();
         document.getElementById("result").innerHTML = "";
         for (var track of tracks) {
             document.getElementById("result").innerHTML += "<p id="+track.id + " onclick=playThisSCsong("+ track.id +") >"+track.title+"</p>"
         }
-        document.getElementById("hide").style.visibility = "visible"
+        document.getElementById("spinner").style.visibility = "hidden"
+    });
+}
+
+function displayUsers() {
+    var search = document.getElementById("search").value
+
+    document.getElementById("spinner").style.visibility = "visible"
+    scAPI.get('/users', { q: search, limit: 200 }, function(users) {
+        slideout.open();
+        document.getElementById("result").innerHTML = "";
+        for (var user of users) {
+            document.getElementById("result").innerHTML += "<p id="+user.id + " onclick=displayUserFav("+ user.id +") >"+user.username+"</p>"
+        }
+        document.getElementById("spinner").style.visibility = "hidden"
+    });
+}
+
+function displayUserFav(id) {
+    changeUrl("user:" + id);
+    
+    scAPI.get("/users/" + id + "/favorites", { limit: 200 }, function(tracks) {
+        slideout.open();
+        document.getElementById("result").innerHTML = "";
+        for (var track of tracks) {
+            document.getElementById("result").innerHTML += "<p id="+track.id + " onclick=playThisSCsong("+ track.id +") >"+track.title+"</p>"
+        }
     });
 }
 
 function playThisSCsong(id){
     latestSongId = id;
-    changeUrl(id);
+    changeUrl("song:" + id);
+    slideout.close();
     scAPI.get('/tracks/' + id, function(track) {
         if (track.streamable) {
             aleaLoadSound(track.stream_url + "?client_id=" + cID)
@@ -78,6 +110,7 @@ function playThisSCsong(id){
 }
 
 function unPlayableSong() {
+    slideout.open();
     if (document.getElementById(latestSongId)) {
         var song = document.getElementById(latestSongId).innerHTML
         document.getElementById("notification").style.visibility = "visible"
@@ -89,18 +122,7 @@ function unPlayableSong() {
 
 }
 
-document.getElementById('notification').onclick = function(event) {
-    document.getElementById("notification").style.visibility = "hidden"
-};
-
-function hideResult(event) {
-    document.getElementById("hide").style.visibility = "hidden"
-    document.getElementById("result").style.visibility = "hidden"
-    document.getElementById("result").innerHTML = "";
-    //event.stopPropagation();
-}
-
 function changeUrl(id) {
-    var stateObj = { id: id, song: document.getElementById("song").value };
+    var stateObj = { id: id, song: document.getElementById("search").value };
     history.pushState(stateObj, id, "#"+id);
 }

@@ -30,7 +30,7 @@ function Alea() {
     }
 
     this.playSound = function() {
-        console.log("playSound")
+        console.log("playSound", this.buffer)
         if (this.isPlaying) {
             this.stopSound();
         }
@@ -39,9 +39,10 @@ function Alea() {
         this.audioSource.buffer = this.buffer;
         this.audioSource.connect(this.audioContext.destination);
         this.audioSource.onended = function() {
-            this.isPlaying = false;
+            aela.isPlaying = false;
+            console.log("end")
         }
-                
+
         // Analyser
         this.analyser = this.audioContext.createAnalyser();
         this.audioSource.connect(this.analyser)
@@ -117,7 +118,7 @@ function Alea() {
         if (this.smoothedVolume > this.thresold) {
              if (this.hold <= 0) {
                 this.beat = true
-                this.beatAmount = ((this.smoothedVolume - this.thresold) * (this.smoothedVolume - this.thresold)) * 0.5 + 10
+                this.beatAmount = (this.smoothedVolume - this.thresold) * 2 /3 + 4
             } else {
                 this.beat = false
             }

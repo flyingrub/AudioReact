@@ -7,32 +7,79 @@
         <link rel="stylesheet" type="text/css" href="css/main.css">
     </head>
     <body>
+        <!-- Html  -->
+        <nav id="drawer">
+            <header>
+                <h2>AudioReact</h2>
+            </header>
 
-        <form id="form">
-          <input id="song" type="song" name="song" placeholder="Artist - Song" onkeypress="keyFilter(event)">
-          <input id="hide" type="button" onclick="hideResult(event)" value="x" style="visibility: hidden">
-        </form>
-        <div id="notification"></div>
-        <div id="result"></div>
-        <div id="container"></div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js"></script>
+            <section id="search-container">
+                <input id="search" type="text" placeholder="Artist - Song" onkeypress="keyFilter(event)">
+                <div id="search-category" style="display: none">
+                    <ul>
+                        <li class="toggle track"></li>
+                        <li class="toggle artist"></li>
+                        <li class="toggle playlist"></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="result-container">
+                <div style="visibility: hidden" id="spinner" class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
+                </div>
+                <div id="result"></div>
+            </section>
+
+            <footer>
+                <p>about</p>
+            </footer>
+        </nav>
+
+        <main id="nav">
+            <button class="toggle-button"></button>
+            <div id="notification"></div>
+            <div id="container"></div>
+        </main>
+
+        <!-- Min Script -->
+        <script src="js/min/slideout.min.js"></script>
+        <script src="js/min/three.min.js"></script>
+        <script src="js/min/stats.min.js"></script>
+
+        <!-- Three.js Shaders Script -->
+        <script src="js/shaders/CopyShader.js"></script>
+        <script src="js/shaders/DotScreenShader.js"></script>
+        <script src="js/shaders/RGBShiftShader.js"></script>
+
+        <!-- Three.js Postprocess Script -->
+        <script src="js/postprocessing/EffectComposer.js"></script>
+        <script src="js/postprocessing/RenderPass.js"></script>
+        <script src="js/postprocessing/ShaderPass.js"></script>
+        <script src="js/postprocessing/MaskPass.js"></script>
+
+        <!-- AudioReact Script -->
+        <script src="js/ui.js"></script>
         <script src="js/audio.js"></script>
         <script src="js/visual.js"></script>
         <script src="js/scdl.js"></script>
+
         <!-- Piwik -->
         <script type="text/javascript">
-          var _paq = _paq || [];
-          _paq.push(['trackPageView']);
-          _paq.push(['enableLinkTracking']);
-          (function() {
-            var u="//piwik.flyingrub.me/";
-            _paq.push(['setTrackerUrl', u+'piwik.php']);
-            _paq.push(['setSiteId', 1]);
-            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-          })();
+            var _paq = _paq || [];
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u="//piwik.flyingrub.me/";
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', 1]);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
         </script>
         <noscript><p><img src="//piwik.flyingrub.me/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
         <!-- End Piwik Code -->
+
     </body>
 </html>

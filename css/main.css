@@ -9,11 +9,13 @@ body {
     overflow: hidden;
     background-color: #000000;
     font-family: Circular, Helvetica, sans-serif;
+    width: 100%;
+    height: 100%;
 }
 
 canvas { 
     width: 100%;
-    height: 100% 
+    height: 100%;
 }
 
 form {
@@ -23,22 +25,21 @@ form {
     top: 20px;
 }
 
-#result {
-    z-index: 10;
-    background-color: #FFFFFF;
-    position: fixed ;
-    left: 0px;
-    top: 0px;
-    width: 17%;
-    height: 100%;
-    padding-top: 5em;
-    padding-left: 2em;
-    padding-right: 2em;
-    color: #212121;
-    font-size: 12px;
-    cursor: pointer;
-    visibility: hidden;
-    overflow: scroll;
+header {
+    text-align: center;
+}
+
+header h2 {
+    padding-bottom: 1em;
+}
+
+footer {
+    width: 300px;
+    position: fixed;
+    bottom: 0;
+    padding-bottom: 0.5em;
+    background-color: white;
+    text-align: center;
 }
 
 #container {
@@ -78,6 +79,175 @@ form {
 
 #notification p {
     margin: 0;
-    vertical-align: center;
+    vertical-align: middle;
     font-size: 150%;
+}
+
+.toggle-button {
+    width: 3em;
+    height: 2em;
+    background: transparent url(../assets/menu.png) no-repeat scroll center center;
+    background-size: contain;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    outline: medium none;
+    border: medium none;
+    cursor: pointer;
+}
+
+.artist {
+    background: transparent url(../assets/artist.png) no-repeat scroll center center;
+    background-size: contain;
+}
+
+.track {
+    background: transparent url(../assets/track.png) no-repeat scroll center center;
+    background-size: contain;
+}
+
+.playlist {
+    background: transparent url(../assets/playlist.png) no-repeat scroll center center;
+    background-size: contain;
+}
+
+#search-category {
+    padding-top: 0.5em;
+}
+
+#search-category ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#search-category li {
+    width: 3em;
+    height: 3em;
+    display:inline-block;
+    outline: medium none;
+    border: medium none;
+    cursor: pointer;
+    margin: 0 30px;
+}
+
+#search-category li::selection {
+    background-color: grey;
+}
+
+:focus {outline:none;}
+::-moz-focus-inner {border:0;}
+
+/* Slideout */
+.slideout-menu {
+    background-color: #FFFFFF;
+    color: black;
+    font-size: 12px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 0;
+    width: 300px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    display: none;
+}
+
+.slideout-panel {
+    box-shadow: -2px 0px 10px grey;
+    z-index: 1;
+    color: white;
+    background-color: black;
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+    overflow: hidden;
+}
+
+.slideout-open .slideout-menu {
+    display: block;
+}
+
+#drawer > * {
+    direction: ltr;
+}
+
+input {
+    font-size: 18px;
+    padding: 10px 10px;
+    margin: 1em 1.2em;
+    border: none;
+    outline: none;
+    border-bottom:1px solid #757575;
+}
+
+input:focus {
+    border-bottom:1px solid #424242;
+}
+
+#search-container {
+    text-align: center;
+    padding-bottom: 1em;
+}
+
+#result p {
+    margin: 0px;
+    color: #424242;
+    padding: 1em 2em;
+    cursor: pointer;
+}
+
+#result p:hover {
+    color: #212121;
+    background-color: #e0e0e0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;  
+}
+
+.double-bounce1, .double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #757575;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
 }
