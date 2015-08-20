@@ -50,35 +50,10 @@ function initDisplay() {
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.getElementById('container').appendChild( renderer.domElement );
 
-    // ------ test ----- \\
-    scene.fog = new THREE.Fog( 0x000000, 1, 1000 );
-
-    object = new THREE.Object3D();
-    scene.add( object );
-
-    var geometry = new THREE.SphereGeometry( 1, 4, 4 );
-    var material = new THREE.MeshPhongMaterial( { color: 0xffffff, shading: THREE.FlatShading } );
-
-    scene.add( new THREE.AmbientLight( 0x222222 ) );
-
-    light = new THREE.DirectionalLight( 0xffffff );
-    light.position.set( 1, 1, 1 );
-    scene.add( light );
-
-    scene.add( new THREE.AmbientLight( 0x222222 ) );
-
-    light = new THREE.DirectionalLight( 0xffffff );
-    light.position.set( 1, 1, 1 );
-    scene.add( light );
-
     // Post Process
 
     composer = new THREE.EffectComposer( renderer );
     composer.addPass( new THREE.RenderPass( scene, camera ) );
-
-    //var effect = new THREE.ShaderPass( THREE.DotScreenShader );
-    //effect.uniforms[ 'scale' ].value = 4;
-    //composer.addPass( effect );
 
     rgbPass = new THREE.ShaderPass( THREE.RGBShiftShader );
     rgbPass.uniforms[ 'amount' ].value = 0.0005;
@@ -119,7 +94,7 @@ function playing() {
         beat();
         scene.rotation.z += 20;
         sens = Math.random() >= 0.5
-    } 
+    }
     if (alea.beatAmount > 0) {
         alea.beatAmount = alea.beatAmount - 0.2;
         if (sens) {
@@ -131,10 +106,10 @@ function playing() {
     } else {
         scene.rotation.y = 0;
     }
-    geometry = new THREE.RingGeometry( radius, outer , lineNumber);   
+    geometry = new THREE.RingGeometry( radius, outer , lineNumber);
 
     var material = new THREE.MeshDepthMaterial();
-    
+
     var form = new THREE.Mesh( geometry, material );
     scene.add( form );
     composer.render();
@@ -146,10 +121,10 @@ function playing() {
 
 function loading() {
     scene.rotation.z -= 0.05
-    
+
     var geometry = new THREE.RingGeometry( 50, 100 , 3);
     var material = new THREE.MeshDepthMaterial();
-    
+
     var form = new THREE.Mesh( geometry, material );
     scene.add( form );
     composer.render();
@@ -158,10 +133,10 @@ function loading() {
 
 function idling() {
     scene.rotation.z += 0.002
-    
+
     var geometry = new THREE.RingGeometry( 50, 100 , 3);
     var material = new THREE.MeshDepthMaterial();
-    
+
     var form = new THREE.Mesh( geometry, material );
     scene.add( form );
     composer.render();
@@ -194,4 +169,3 @@ window.onresize = function(event) {
     renderer.setSize( window.innerWidth, window.innerHeight );
 
 }
-
