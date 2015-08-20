@@ -50,6 +50,9 @@ function initDisplay() {
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.getElementById('container').appendChild( renderer.domElement );
 
+    renderer.domElement.setAttribute("tabindex", "1"); // so that it can focus
+    renderer.domElement.setAttribute("onkeypress", "canvasKeyfilter(event)");
+
     // Post Process
 
     composer = new THREE.EffectComposer( renderer );

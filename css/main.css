@@ -37,9 +37,15 @@ footer {
     width: 300px;
     position: fixed;
     bottom: 0;
+    padding-top: 0.5em;
     padding-bottom: 0.5em;
     background-color: white;
     text-align: center;
+}
+
+footer a {
+    text-decoration: none;
+    color: #212121;
 }
 
 #container {
@@ -150,7 +156,7 @@ footer {
     right: 0;
     z-index: 0;
     width: 300px;
-    overflow-y: scroll;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     display: none;
 }

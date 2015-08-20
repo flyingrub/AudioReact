@@ -4,17 +4,7 @@ const cID2 = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
 var latestSongId;
 var scAPI;
 
-initSC();
-
-function initSC(){
-    scAPI = new ScAPI(cID)
-    param = window.location.hash.replace('#','');
-    if (param.search("user:") != -1) {
-        displayUserFav(param.replace("user:",''));
-    } else if (param.search("song:") != -1) {
-        playThisSCsong(param.replace("song:",''))
-    }
-}
+scAPI = new ScAPI(cID)
 
 function ScAPI(clientId) {
     const apiURL = "https://api.soundcloud.com"
@@ -39,7 +29,7 @@ function ScAPI(clientId) {
             }
             if (parameter.limit) {
                 url = url + "&limit=" + parameter.limit
-            }       
+            }
         }
 
         var req = new XMLHttpRequest();
@@ -48,7 +38,7 @@ function ScAPI(clientId) {
         req.onload = function() {
             if (call !== undefined){
                 call(req.response)
-            }           
+            }
         }
         req.onerror = function(e) {
             console.warn(e)
@@ -86,10 +76,10 @@ function displayUsers() {
     });
 }
 
-function displayUserFav(id) {
-    changeUrl("user:" + id);
-    
-    scAPI.get("/users/" + id + "/favorites", { limit: 200 }, function(tracks) {
+function displayUserFav(userId) {
+    changeUrl("/user/", userId);
+
+    scAPI.get("/users/" + userId + "/favorites", { limit: 200 }, function(tracks) {
         slideout.open();
         document.getElementById("result").innerHTML = "";
         for (var track of tracks) {
@@ -98,12 +88,13 @@ function displayUserFav(id) {
     });
 }
 
-function playThisSCsong(id){
+function playThisSCsong(id) {
     latestSongId = id;
-    changeUrl("song:" + id);
-    slideout.close();
+    changeUrl("/track/", id);
+
     scAPI.get('/tracks/' + id, function(track) {
         if (track.streamable) {
+            slideout.close();
             aleaLoadSound(track.stream_url + "?client_id=" + cID)
         }
     });
@@ -114,15 +105,15 @@ function unPlayableSong() {
     if (document.getElementById(latestSongId)) {
         var song = document.getElementById(latestSongId).innerHTML
         document.getElementById("notification").style.visibility = "visible"
-        document.getElementById("notification").innerHTML = "<p>"+ song + " is unplayable... <em>Blame soundcloud.</em></p>";   
+        document.getElementById("notification").innerHTML = "<p>"+ song + " is unplayable... <em>Blame soundcloud.</em></p>";
     } else {
         document.getElementById("notification").style.visibility = "visible"
-        document.getElementById("notification").innerHTML = "<p>This song is unplayable... <em>Blame soundcloud.</em></p>"; 
+        document.getElementById("notification").innerHTML = "<p>This song is unplayable... <em>Blame soundcloud.</em></p>";
     }
 
 }
 
-function changeUrl(id) {
-    var stateObj = { id: id, song: document.getElementById("search").value };
-    history.pushState(stateObj, id, "#"+id);
+function changeUrl(path, id) {
+    var stateObj = { id: id, search: document.getElementById("search").value };
+    history.pushState(stateObj, id, path + id);
 }

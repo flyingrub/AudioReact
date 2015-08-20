@@ -3,18 +3,18 @@
     <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title>ALEA</title>
-        <link rel="stylesheet" type="text/css" href="css/main.css">
+        <title>ΔudioReact</title>
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
     </head>
     <body>
         <!-- Html  -->
         <nav id="drawer">
             <header>
-                <h2>AudioReact</h2>
+                <!-- <h2>AudioReact</h2> -->
             </header>
 
             <section id="search-container">
-                <input id="search" type="text" placeholder="Artist - Song" onkeypress="keyFilter(event)">
+                <input id="search" type="text" placeholder="Artist - Song" onkeypress="inputKeyFilter(event)">
                 <div id="search-category" style="display: none">
                     <ul>
                         <li class="toggle track"></li>
@@ -33,37 +33,43 @@
             </section>
 
             <footer>
-                <p>about</p>
+                <a target="_blank" href="https://github.com/flyingrub">About me</a>
             </footer>
         </nav>
 
         <main id="nav">
             <button class="toggle-button"></button>
             <div id="notification"></div>
-            <div id="container"></div>
+            <div id="container" tabindex="0"></div>
         </main>
 
+        <audio id="player" autoplay preload autobuffer></audio>
+        <!-- End Html  -->
+
         <!-- Min Script -->
-        <script src="js/min/slideout.min.js"></script>
-        <script src="js/min/three.min.js"></script>
-        <script src="js/min/stats.min.js"></script>
+        <script src="/js/min/slideout.min.js"></script>
+        <script src="/js/min/three.min.js"></script>
+        <script src="/js/min/stats.min.js"></script>
 
         <!-- Three.js Shaders Script -->
-        <script src="js/shaders/CopyShader.js"></script>
-        <script src="js/shaders/DotScreenShader.js"></script>
-        <script src="js/shaders/RGBShiftShader.js"></script>
+        <script src="/js/shaders/CopyShader.js"></script>
+        <script src="/js/shaders/ConvolutionShader.js"></script>
+        <script src="/js/shaders/DotScreenShader.js"></script>
+        <script src="/js/shaders/RGBShiftShader.js"></script>
 
         <!-- Three.js Postprocess Script -->
-        <script src="js/postprocessing/EffectComposer.js"></script>
-        <script src="js/postprocessing/RenderPass.js"></script>
-        <script src="js/postprocessing/ShaderPass.js"></script>
-        <script src="js/postprocessing/MaskPass.js"></script>
+        <script src="/js/postprocessing/BloomPass.js"></script>
+        <script src="/js/postprocessing/EffectComposer.js"></script>
+        <script src="/js/postprocessing/RenderPass.js"></script>
+        <script src="/js/postprocessing/ShaderPass.js"></script>
+        <script src="/js/postprocessing/MaskPass.js"></script>
 
         <!-- AudioReact Script -->
-        <script src="js/ui.js"></script>
-        <script src="js/audio.js"></script>
-        <script src="js/visual.js"></script>
-        <script src="js/scdl.js"></script>
+        <script src="/js/scdl.js"></script>
+        <script src="/js/ui.js"></script>
+        <script src="/js/audio.js"></script>
+        <script src="/js/visual.js"></script>
+
 
         <!-- Piwik -->
         <script type="text/javascript">
