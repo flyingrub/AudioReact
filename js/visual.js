@@ -1,29 +1,11 @@
-var container;
 var stats;
-
 var camera, scene, renderer, rgbPass;
-var alea = new Alea();
 
-initStat();
-if (isMob()) {
-    document.body.innerHTML = "<div id=mobile><h3>Mobile unsupported for now...</h3><h4>We'll see you on desktop ;)</h4></div>";
-} else {
+
+function visualInit() {
+    initStat();
     initDisplay();
     animate();
-}
-
-document.getElementById('container').onclick = function(event) {
-    if (alea.isPlaying) {
-        alea.stopSound();
-    }  else if (alea.url && !alea.isLoading) {
-        alea.playSound();
-    }
-};
-
-function aleaLoadSound(audio) {
-    alea.stopSound();
-    alea.url = audio
-    alea.initAudio();
 }
 
 function initStat() {
@@ -74,9 +56,9 @@ function animate() {
 }
 
 function render() {
-    if (alea.isPlaying) {
+    if (audio.isPlaying) {
         playing()
-    } else if (alea.isLoading) {
+    } else if (audio.isLoading) {
         loading()
     } else {
         idling()
@@ -88,24 +70,24 @@ function beat() {
 }
 
 function playing() {
-    alea.detectBeat();
+    audio.detectBeat();
 
-    radius = Math.floor(alea.smoothedBass);
-    outer = Math.floor(alea.smoothedVolume) + radius
+    radius = Math.floor(audio.smoothedBass);
+    outer = Math.floor(audio.smoothedVolume) + radius
 
-    if (alea.beat) {
+    if (audio.beat) {
         beat();
         scene.rotation.z += 20;
         sens = Math.random() >= 0.5
     }
-    if (alea.beatAmount > 0) {
-        alea.beatAmount = alea.beatAmount - 0.2;
+    if (audio.beatAmount > 0) {
+        audio.beatAmount = audio.beatAmount - 0.2;
         if (sens) {
-            scene.rotation.z += alea.beatAmount / 300;
+            scene.rotation.z += audio.beatAmount / 300;
         } else {
-            scene.rotation.z -= alea.beatAmount / 300;
+            scene.rotation.z -= audio.beatAmount / 300;
         }
-        rgbPass.uniforms[ 'amount' ].value = alea.beatAmount / 2000 +  0.0015;
+        rgbPass.uniforms[ 'amount' ].value = audio.beatAmount / 2000 +  0.0015;
     } else {
         scene.rotation.y = 0;
     }

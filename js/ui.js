@@ -1,19 +1,31 @@
-var slideout = new Slideout({
-    'panel': document.getElementById('nav'),
-    'menu': document.getElementById('drawer'),
-    'padding': 300,
-    'tolerance': 70
-});
+var audio = new Audio();
 
+if (isMob()) {
+    document.body.innerHTML = "<div id=mobile><h3>Mobile unsupported for now...</h3><h4>We'll see you on desktop ;)</h4></div>";
+    throw new Error("Mobile unsupported for now aborting js execution");
+} else {
+    var slideout = new Slideout({
+        'panel': document.getElementById('nav'),
+        'menu': document.getElementById('drawer'),
+        'padding': 300,
+        'tolerance': 70
+    });
+    var player = document.getElementById('player')
+    audio.init(player);
+    visualInit()
+    scdlInit();
+    parseUrl();
+}
+
+// toggle the Slideout
 document.querySelector('.toggle-button').addEventListener('click', function() {
     slideout.toggle();
 });
 
+// Hide notification
 document.getElementById('notification').onclick = function(event) {
     document.getElementById("notification").style.visibility = "hidden"
 };
-
-parseUrl();
 
 function inputKeyFilter(event) {
     if (event.key == 'Enter') {
@@ -27,12 +39,50 @@ function inputKeyFilter(event) {
 
 function canvasKeyfilter(event) {
     //console.log(event.key, event.keyCode)
-    if (event.key && event.key == 'f') {
+    if (event.key) {
         event.preventDefault();
-        toggleFullScreen();
-    } else if (event.keyCode && event.keyCode == 102) { // support old browser like chromium.
+        switch (event.key) {
+            case " ":
+                audio.toggle();
+                break;
+            case "f":
+                toggleFullScreen();
+                break;
+            case "ArrowDown":
+
+                break;
+            case "ArrowUp":
+
+                break;
+            case "ArrowLeft":
+                playPreviousFromTracklist();
+                break;
+            case "ArrowRight":
+                playNextFromTracklist();
+                break;
+        }
+    } else if (event.keyCode) { // support old browser like chromium.
         event.preventDefault();
-        toggleFullScreen();
+        switch (event.keyCode) {
+            case 32:
+                audio.toggle();
+                break;
+            case 102:
+                toggleFullScreen();
+                break;
+            case 40:
+
+                break;
+            case 38:
+
+                break;
+            case 37:
+                playPreviousFromTracklist();
+                break;
+            case 39:
+                playNextFromTracklist();
+                break;
+        }
     }
 }
 
@@ -59,7 +109,7 @@ function parseUrl() {
             displayUserFav(url[2]);
             break;
         case "track":
-            playThisSCsong(url[2]);
+            playFromId(url[2]);
             break;
     }
 }
@@ -84,4 +134,10 @@ function toggleFullScreen() {
           document.webkitCancelFullScreen();
         }
     }
+}
+
+function showNotificationError() {
+    slideout.open();
+    document.getElementById("notification").style.visibility = "visible";
+    document.getElementById("notification").innerHTML = "<p>"+ currentTrack.title +" is unplayable... <em>Blame soundcloud.</em></p>";
 }

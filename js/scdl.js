@@ -1,10 +1,14 @@
 const cID = "95a4c0ef214f2a4a0852142807b54b35"
 const cID2 = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
 
-var latestSongId;
 var scAPI;
+var tracklist;
+var currentTrackPos;
+var currentTrack;
 
-scAPI = new ScAPI(cID)
+function scdlInit() {
+    scAPI = new ScAPI(cID);
+}
 
 function ScAPI(clientId) {
     const apiURL = "https://api.soundcloud.com"
@@ -48,26 +52,13 @@ function ScAPI(clientId) {
     }
 }
 
-function displaySongs() {
-    var search = document.getElementById("search").value
-
-    document.getElementById("spinner").style.visibility = "visible"
-    scAPI.get('/tracks', { q: search, limit: 200 }, function(tracks) {
-        slideout.open();
-        document.getElementById("result").innerHTML = "";
-        for (var track of tracks) {
-            document.getElementById("result").innerHTML += "<p id="+track.id + " onclick=playThisSCsong("+ track.id +") >"+track.title+"</p>"
-        }
-        document.getElementById("spinner").style.visibility = "hidden"
-    });
-}
-
 function displayUsers() {
     var search = document.getElementById("search").value
 
+    slideout.open();
     document.getElementById("spinner").style.visibility = "visible"
+
     scAPI.get('/users', { q: search, limit: 200 }, function(users) {
-        slideout.open();
         document.getElementById("result").innerHTML = "";
         for (var user of users) {
             document.getElementById("result").innerHTML += "<p id="+user.id + " onclick=displayUserFav("+ user.id +") >"+user.username+"</p>"
@@ -76,41 +67,80 @@ function displayUsers() {
     });
 }
 
+function displaySongs() {
+    var search = document.getElementById("search").value
+
+    var counter = 0;
+    slideout.open();
+    document.getElementById("spinner").style.visibility = "visible"
+
+    scAPI.get('/tracks', { q: search, limit: 200 }, function(tracks) {
+        tracklist = tracks;
+        document.getElementById("result").innerHTML = "";
+        for (var track of tracks) {
+            document.getElementById("result").innerHTML += "<p id="+track.id + " onclick=playFromTrackList("+ counter +") >"+track.title+"</p>"
+            counter++;
+        }
+        document.getElementById("spinner").style.visibility = "hidden"
+    });
+}
+
 function displayUserFav(userId) {
     changeUrl("/user/", userId);
 
+    var counter = 0;
+    slideout.open();
+    document.getElementById("spinner").style.visibility = "visible"
+
     scAPI.get("/users/" + userId + "/favorites", { limit: 200 }, function(tracks) {
-        slideout.open();
+        tracklist = tracks;
         document.getElementById("result").innerHTML = "";
         for (var track of tracks) {
-            document.getElementById("result").innerHTML += "<p id="+track.id + " onclick=playThisSCsong("+ track.id +") >"+track.title+"</p>"
+            document.getElementById("result").innerHTML += "<p id="+track.id + " onclick=playFromTrackList("+ counter +") >"+track.title+"</p>"
+            counter++;
         }
+        document.getElementById("spinner").style.visibility = "hidden"
     });
 }
 
-function playThisSCsong(id) {
-    latestSongId = id;
+function playFromTrackList(count) {
+    if (currentTrack && document.getElementById(currentTrack.id)) {
+        document.getElementById(currentTrack.id).className = ""
+    }
+
+    currentTrack = tracklist[count];
+    currentTrackPos = count;
+
+    changeUrl("/track/", currentTrack.id);
+    document.getElementById(currentTrack.id).className = "selected-track"
+
+    if (currentTrack.streamable) {
+        slideout.close();
+        audio.load(currentTrack.stream_url + "?client_id=" + cID)
+    }
+}
+
+function playNextFromTracklist() {
+    if (tracklist) {
+        playFromTrackList(currentTrackPos + 1);
+    }
+}
+
+function playPreviousFromTracklist() {
+    if (tracklist) {
+        playFromTrackList(currentTrackPos - 1);
+    }
+}
+
+function playFromId(id){
     changeUrl("/track/", id);
 
     scAPI.get('/tracks/' + id, function(track) {
+        currentTrack = track;
         if (track.streamable) {
-            slideout.close();
-            aleaLoadSound(track.stream_url + "?client_id=" + cID)
+            audio.load(track.stream_url + "?client_id=" + cID)
         }
     });
-}
-
-function unPlayableSong() {
-    slideout.open();
-    if (document.getElementById(latestSongId)) {
-        var song = document.getElementById(latestSongId).innerHTML
-        document.getElementById("notification").style.visibility = "visible"
-        document.getElementById("notification").innerHTML = "<p>"+ song + " is unplayable... <em>Blame soundcloud.</em></p>";
-    } else {
-        document.getElementById("notification").style.visibility = "visible"
-        document.getElementById("notification").innerHTML = "<p>This song is unplayable... <em>Blame soundcloud.</em></p>";
-    }
-
 }
 
 function changeUrl(path, id) {
