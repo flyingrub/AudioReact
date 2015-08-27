@@ -16,6 +16,7 @@ function initStat() {
     stats.domElement.style.position = 'absolute';
     stats.domElement.style.right = '20px';
     stats.domElement.style.top = '20px';
+    stats.domElement.style.display = "none";
 
     document.body.appendChild( stats.domElement );
 }

@@ -52,26 +52,24 @@ function ScAPI(clientId) {
     }
 }
 
-function displayUsers() {
+function getUsers() {
     var search = document.getElementById("search").value
 
-    slideout.open();
     document.getElementById("spinner").style.visibility = "visible"
 
     scAPI.get('/users', { q: search, limit: 200 }, function(users) {
         document.getElementById("result").innerHTML = "";
         for (var user of users) {
-            document.getElementById("result").innerHTML += "<p id="+user.id + " onclick=displayUserFav("+ user.id +") >"+user.username+"</p>"
+            document.getElementById("result").innerHTML += "<p id="+user.id + " onclick=getUserFav("+ user.id +") >"+user.username+"</p>"
         }
         document.getElementById("spinner").style.visibility = "hidden"
     });
 }
 
-function displaySongs() {
+function getSongs() {
     var search = document.getElementById("search").value
 
     var counter = 0;
-    slideout.open();
     document.getElementById("spinner").style.visibility = "visible"
 
     scAPI.get('/tracks', { q: search, limit: 200 }, function(tracks) {
@@ -85,11 +83,10 @@ function displaySongs() {
     });
 }
 
-function displayUserFav(userId) {
+function getUserFav(userId) {
     changeUrl("/user/", userId);
 
     var counter = 0;
-    slideout.open();
     document.getElementById("spinner").style.visibility = "visible"
 
     scAPI.get("/users/" + userId + "/favorites", { limit: 200 }, function(tracks) {
@@ -115,7 +112,7 @@ function playFromTrackList(count) {
     document.getElementById(currentTrack.id).className = "selected-track"
 
     if (currentTrack.streamable) {
-        slideout.close();
+;
         audio.load(currentTrack.stream_url + "?client_id=" + cID)
     }
 }

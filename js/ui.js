@@ -1,33 +1,133 @@
-var audio = new Audio();
+// ELEMENT
+function Navbar() {
+    this.bar = document.getElementById('navbar');
+    this.style = this.bar.style;
+    this.mode = "normal"
+    this.search = new NavSearch();
+    this.result = new Result();
 
-if (isMob()) {
-    document.body.innerHTML = "<div id=mobile><h3>Mobile unsupported for now...</h3><h4>We'll see you on desktop ;)</h4></div>";
-    throw new Error("Mobile unsupported for now aborting js execution");
-} else {
-    var slideout = new Slideout({
-        'panel': document.getElementById('nav'),
-        'menu': document.getElementById('drawer'),
-        'padding': 300,
-        'tolerance': 70
-    });
-    var player = document.getElementById('player')
-    audio.init(player);
-    visualInit()
-    scdlInit();
-    parseUrl();
+    this.isHidden = function() {
+        return this.style.top == "0px";
+    }
+
+    this.hide = function () {
+        this.style.top = "-4em";
+    }
+
+    this.show = function () {
+        this.style.top = "0px";
+    }
+
+    this.isInNormalMode = function() {
+        return this.mode == "normal";
+    }
+
+    this.searchMode = function () {
+        var childrens = this.bar.childNodes;
+        for (var i = 0; i < childrens.length; i++) {
+            children = childrens[i];
+            if (children.tagName == "SECTION" && children.id != "nav-search") {
+                children.style.display = "none"
+            }
+        }
+        this.search.searchMode();
+        this.result.show()
+        this.mode = "search"
+    }
+
+    this.normalMode = function() {
+        var childrens = this.bar.childNodes;
+        for (var i = 0; i < childrens.length; i++) {
+            children = childrens[i];
+            if (children.tagName == "SECTION") {
+                children.removeAttribute('style');
+            }
+        }
+        this.search.normalMode();
+        this.result.hide()
+        this.mode = "normal"
+    }
 }
 
-// toggle the Slideout
-document.querySelector('.toggle-button').addEventListener('click', function() {
-    slideout.toggle();
-});
+function NavSearch() {
+    this.search = document.getElementById('nav-search');
+    this.style = this.search.style;
+    this.input = document.getElementById('search');
+    this.closeButton = document.getElementById('close-search');
 
-// Hide notification
-document.getElementById('notification').onclick = function(event) {
-    document.getElementById("notification").style.visibility = "hidden"
-};
+    this.searchMode = function () {
+        this.style.borderLeft = "1px solid #616161";
+        this.style.margin = "0em 35em";
+        this.input.style.marginLeft = "2.5em";
+        this.closeButton.style.display = "inline"
+    }
+
+    this.normalMode = function() {
+        this.search.removeAttribute('style');
+        this.input.removeAttribute('style');
+        this.closeButton.removeAttribute('style');
+    }
+}
+
+function Result() {
+    this.wrapper = document.getElementById('result-wrapper');
+    this.res = document.getElementById('result');
+    this.style = this.wrapper.style;
+
+    this.hide = function() {
+        this.wrapper.removeAttribute('style');
+    }
+
+    this.show = function() {
+        this.style.display = "flex";
+    }
+
+    this.displayTracks = function() {
+
+    }
+}
+
+function LogoNavToggle() {
+    this.style = document.getElementById('toggle-nav').style
+
+    this.hide = function () {
+        this.style.fill = "black"
+    }
+
+    this.show = function () {
+        this.style.fill = "white"
+    }
+}
+
+// *****************
+//      EVENT
+// *****************
+function toggleNav(event) {
+    var nav = new Navbar();
+    var toggle = new LogoNavToggle();
+    if (nav.isHidden()) {
+        nav.hide();
+        toggle.hide();
+    } else {
+        nav.show();
+        toggle.show();
+    }
+}
+
+function inputClick(event) {
+    var nav = new Navbar();
+    if (nav.isInNormalMode()) {
+        nav.searchMode();
+    }
+}
+
+function closeSearch(event) {
+    var nav = new Navbar();
+    nav.normalMode();
+}
 
 function inputKeyFilter(event) {
+
     if (event.key == 'Enter') {
         event.preventDefault();
         displaySongs();
@@ -35,109 +135,4 @@ function inputKeyFilter(event) {
         event.preventDefault();
         displaySongs();
     }
-}
-
-function canvasKeyfilter(event) {
-    //console.log(event.key, event.keyCode)
-    if (event.key) {
-        event.preventDefault();
-        switch (event.key) {
-            case " ":
-                audio.toggle();
-                break;
-            case "f":
-                toggleFullScreen();
-                break;
-            case "ArrowDown":
-
-                break;
-            case "ArrowUp":
-
-                break;
-            case "ArrowLeft":
-                playPreviousFromTracklist();
-                break;
-            case "ArrowRight":
-                playNextFromTracklist();
-                break;
-        }
-    } else if (event.keyCode) { // support old browser like chromium.
-        event.preventDefault();
-        switch (event.keyCode) {
-            case 32:
-                audio.toggle();
-                break;
-            case 102:
-                toggleFullScreen();
-                break;
-            case 40:
-
-                break;
-            case 38:
-
-                break;
-            case 37:
-                playPreviousFromTracklist();
-                break;
-            case 39:
-                playNextFromTracklist();
-                break;
-        }
-    }
-}
-
-function isMob() {
-    if( navigator.userAgent.match(/Android/i)
-        || navigator.userAgent.match(/webOS/i)
-        || navigator.userAgent.match(/iPhone/i)
-        || navigator.userAgent.match(/iPad/i)
-        || navigator.userAgent.match(/iPod/i)
-        || navigator.userAgent.match(/BlackBerry/i)
-        || navigator.userAgent.match(/Windows Phone/i)
-    ){
-        return true;
-    } else {
-        return false;
-    }
-}
-
-function parseUrl() {
-    url = window.location.pathname.split("/");
-    console.log(url)
-    switch (url[1]) {
-        case "user":
-            displayUserFav(url[2]);
-            break;
-        case "track":
-            playFromId(url[2]);
-            break;
-    }
-}
-
-function toggleFullScreen() {
-    container = document.getElementById('container');
-    if (!document.fullscreenElement &&    // alternative standard method
-      !document.mozFullScreenElement && !document.webkitFullscreenElement) {  // current working methods
-        if (container.requestFullscreen) {
-          container.requestFullscreen();
-        } else if (container.mozRequestFullScreen) {
-          container.mozRequestFullScreen();
-        } else if (container.webkitRequestFullscreen) {
-          container.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-        }
-    } else {
-        if (document.cancelFullScreen) {
-          document.cancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        }
-    }
-}
-
-function showNotificationError() {
-    slideout.open();
-    document.getElementById("notification").style.visibility = "visible";
-    document.getElementById("notification").innerHTML = "<p>"+ currentTrack.title +" is unplayable... <em>Blame soundcloud.</em></p>";
 }
