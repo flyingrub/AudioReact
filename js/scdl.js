@@ -5,6 +5,8 @@ var scAPI;
 var tracklist;
 var currentTrackPos;
 var currentTrack;
+var currentUser;
+var playFrom;
 
 function scdlInit() {
     scAPI = new ScAPI(cID);
@@ -14,14 +16,14 @@ function ScAPI(clientId) {
     const apiURL = "https://api.soundcloud.com"
     this.clientId = clientId
 
-    this.get = function (endpoint, parameter, call) {
+    this.get = function (endpoint, parameter, callback) {
         if (endpoint === undefined || parameter === undefined) {
             console.warn("no endpoint or function specified")
             return
         }
 
         if (parameter && {}.toString.call(parameter) === '[object Function]') {
-            call = parameter
+            callback = parameter
             parameter = undefined
         }
 
@@ -40,8 +42,8 @@ function ScAPI(clientId) {
         req.open("GET", url, true);
         req.responseType = "json";
         req.onload = function() {
-            if (call !== undefined){
-                call(req.response)
+            if (callback !== undefined){
+                callback(req.response)
             }
         }
         req.onerror = function(e) {
@@ -52,95 +54,109 @@ function ScAPI(clientId) {
     }
 }
 
-function getUsers() {
-    var search = document.getElementById("search").value
-
-    document.getElementById("spinner").style.visibility = "visible"
-
+function getUsers(search, callback) {
+    changeUrl("/search/" + search + "/users", search);
     scAPI.get('/users', { q: search, limit: 200 }, function(users) {
-        document.getElementById("result").innerHTML = "";
-        for (var user of users) {
-            document.getElementById("result").innerHTML += "<p id="+user.id + " onclick=getUserFav("+ user.id +") >"+user.username+"</p>"
-        }
-        document.getElementById("spinner").style.visibility = "hidden"
+        callback(users);
     });
 }
 
-function getSongs() {
-    var search = document.getElementById("search").value
-
-    var counter = 0;
-    document.getElementById("spinner").style.visibility = "visible"
-
+function getTracks(search, callback) {
+    changeUrl("/search/" + search + "/tracks", search);
     scAPI.get('/tracks', { q: search, limit: 200 }, function(tracks) {
         tracklist = tracks;
-        document.getElementById("result").innerHTML = "";
-        for (var track of tracks) {
-            document.getElementById("result").innerHTML += "<p id="+track.id + " onclick=playFromTrackList("+ counter +") >"+track.title+"</p>"
-            counter++;
-        }
-        document.getElementById("spinner").style.visibility = "hidden"
+        playFrom = "search results"
+        callback(tracks);
     });
 }
 
-function getUserFav(userId) {
-    changeUrl("/user/", userId);
+function getUser(userId, callback) {
+    scAPI.get("/users/" + userId, { limit: 200 }, function(user) {
+        currentUser = user;
+        callback(user);
+    });
+}
 
-    var counter = 0;
-    document.getElementById("spinner").style.visibility = "visible"
-
+function getUserFav(userId, callback) {
+    changeUrl("/users/" + userId + "/favorites", userId);
     scAPI.get("/users/" + userId + "/favorites", { limit: 200 }, function(tracks) {
         tracklist = tracks;
-        document.getElementById("result").innerHTML = "";
-        for (var track of tracks) {
-            document.getElementById("result").innerHTML += "<p id="+track.id + " onclick=playFromTrackList("+ counter +") >"+track.title+"</p>"
-            counter++;
-        }
-        document.getElementById("spinner").style.visibility = "hidden"
+        playFrom = currentUser.username + "\'s likes"
+        callback(tracks);
+    });
+}
+
+function getUserTracks(userId, callback) {
+    changeUrl("/users/" + userId + "/tracks", userId);
+    scAPI.get("/users/" + userId + "/tracks", { limit: 200 }, function(tracks) {
+        tracklist = tracks;
+        playFrom = currentUser.username + "\'s tracks"
+        callback(tracks);
+    });
+}
+
+function getUserPlaylists(userId, callback) {
+    changeUrl("/users/" + userId + "/playlists", userId);
+    scAPI.get("/users/" + userId + "/playlists", { limit: 200 }, function(playlists) {
+        callback(playlists);
+    });
+}
+
+function getPlaylist(id, callback) {
+    changeUrl("/playlists/" + id, id);
+    scAPI.get("/playlists/" + id, { limit: 200 }, function(playlist) {
+        tracklist = playlist.tracks;
+        playFrom = playlist.title;
+        callback(playlist.tracks);
     });
 }
 
 function playFromTrackList(count) {
-    if (currentTrack && document.getElementById(currentTrack.id)) {
-        document.getElementById(currentTrack.id).className = ""
+    if (currentTrack && document.getElementById("title-" + currentTrack.id)) {
+        document.getElementById("title-" + currentTrack.id).className = "track-title";
     }
 
     currentTrack = tracklist[count];
     currentTrackPos = count;
 
-    changeUrl("/track/", currentTrack.id);
-    document.getElementById(currentTrack.id).className = "selected-track"
+    changeUrl("/track/" + currentTrack.id, currentTrack.id);
+    document.getElementById("title-" + currentTrack.id).className += " selected-track"
 
     if (currentTrack.streamable) {
-;
         audio.load(currentTrack.stream_url + "?client_id=" + cID)
     }
+    playToggle.pause();
+    updateCurrentTrack(currentTrack, playFrom);
 }
 
 function playNextFromTracklist() {
     if (tracklist) {
         playFromTrackList(currentTrackPos + 1);
     }
+    playToggle.pause();
 }
 
 function playPreviousFromTracklist() {
     if (tracklist) {
         playFromTrackList(currentTrackPos - 1);
     }
+    playToggle.pause();
 }
 
 function playFromId(id){
-    changeUrl("/track/", id);
+    changeUrl("/track/" + id, id);
 
     scAPI.get('/tracks/' + id, function(track) {
         currentTrack = track;
         if (track.streamable) {
             audio.load(track.stream_url + "?client_id=" + cID)
+            playToggle.pause();
+            updateCurrentTrack(currentTrack, "a single track");
         }
     });
 }
 
 function changeUrl(path, id) {
     var stateObj = { id: id, search: document.getElementById("search").value };
-    history.pushState(stateObj, id, path + id);
+    history.pushState(stateObj, id, path);
 }

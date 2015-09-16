@@ -21,6 +21,7 @@ function Audio() {
             this.audioSource.connect(this.audioContext.destination);
             this.player.onended = aela.onended;
             this.player.onerror = aela.onerror;
+            this.player.ontimeupdate = updateTimeAudio;
 
             // Analyser
             this.analyser = this.audioContext.createAnalyser();

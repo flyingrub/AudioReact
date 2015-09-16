@@ -20,38 +20,37 @@
             </section>
 
             <section id="nav-artist-info">
-                <p id="artist-track">Track</p><br>
-                <p id="artist-name">by Artist</p>
+                <p id="playing-from" onclick="">Not playing...</p><br>
+                <p id="track-info">No tracks :(</p>
             </section>
 
             <section id="nav-player-toggle">
-                <svg id="play-previous" fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
+                <svg id="play-previous" onclick="playPreviousFromTracklist()" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="20" y1="20" x2="10" y2="12" style="stroke:white;stroke-width:1" />
+                    <line x1="20" y1="4" x2="10" y2="12" style="stroke:white;stroke-width:1" />
                 </svg>
 
-                <svg id="play-toggle" fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 5v14l11-7z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
+                <svg id="play-toggle" onclick="togglePlay(evt)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="4,4 4,20 20,20 20,4" style="stroke:white;stroke-width:1" />
+                    <polyline id="line-play" points="4,4 20,20" style="stroke:none;stroke-width:1" />
+                    <polyline id="line-pause" points="12,4 12,20" style="stroke:none;stroke-width:1" />
                 </svg>
 
-                <svg id="play-next" fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
+                <svg id="play-next" onclick="playNextFromTracklist()" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="4" y1="4" x2="14" y2="12" style="stroke:white;stroke-width:1" />
+                    <line x1="4" y1="20" x2="14" y2="12" style="stroke:white;stroke-width:1" />
                 </svg>
             </section>
 
             <section id="nav-player-info">
                 <p id="current-time">0:00</p>
-                <progress id="bar-time" value="0.5"></progress>
+                <div id="progress-bar">
+                  <div id="progress"></div>
+                </div>
                 <p id="remaining-time">-1:00</p>
             </section>
 
             <section id="nav-player-volume">
-                <svg display="none" id="volume" fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
-                </svg>
             </section>
 
         </nav>
@@ -61,7 +60,10 @@
                 <polygon points="7,8 12,16 17,8" style="stroke:white;stroke-width:1" />
             </svg>
             <div id="result-wrapper">
-                <div id="result"></div>
+                <div id="result-container">
+                    <div id="result-header"></div>
+                    <div id="result-data"></div>
+                </div>
             </div>
             <div id="container" tabindex="0"></div>
         </main>
@@ -87,6 +89,7 @@
         <script src="/js/postprocessing/MaskPass.js"></script>
 
         <!-- AudioReact Script -->
+        <script src="/js/control.js"></script>
         <script src="/js/scdl.js"></script>
         <script src="/js/audio.js"></script>
         <script src="/js/visual.js"></script>

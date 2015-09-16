@@ -11,23 +11,13 @@ if (isMob()) {
     parseUrl();
 }
 
-function inputKeyFilter(event) {
-    if (event.key == 'Enter') {
-        event.preventDefault();
-        displaySongs();
-    } else if (event.keyCode && event.keyCode == 13) { // support old browser like chromium.
-        event.preventDefault();
-        displaySongs();
-    }
-}
-
 function canvasKeyfilter(event) {
     //console.log(event.key, event.keyCode)
     if (event.key) {
         event.preventDefault();
         switch (event.key) {
             case " ":
-                audio.toggle();
+                togglePlay();
                 break;
             case "f":
                 toggleFullScreen();
@@ -49,7 +39,7 @@ function canvasKeyfilter(event) {
         event.preventDefault();
         switch (event.keyCode) {
             case 32:
-                audio.toggle();
+                togglePlay();
                 break;
             case 102:
                 toggleFullScreen();
@@ -95,6 +85,10 @@ function parseUrl() {
         case "track":
             playFromId(url[2]);
             break;
+        case "search":
+            nav.show();
+            nav.searchMode();
+            getTracks(url[2], res.search);
     }
 }
 

@@ -3,6 +3,7 @@ var camera, scene, renderer, rgbPass;
 
 
 function visualInit() {
+    console.log("init visual");
     initStat();
     initDisplay();
     animate();
@@ -15,7 +16,7 @@ function initStat() {
     // align top-left
     stats.domElement.style.position = 'absolute';
     stats.domElement.style.right = '20px';
-    stats.domElement.style.top = '20px';
+    stats.domElement.style.bottom = '20px';
     stats.domElement.style.display = "none";
 
     document.body.appendChild( stats.domElement );
