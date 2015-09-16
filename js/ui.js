@@ -167,7 +167,7 @@ function Result() {
     function playlistToHtml(playlist) {
         begin = "<div id=element-"+playlist.id + " class=\"result-element\">"
         title = "<p class=\"track-title\" id=title-"+playlist.id+" onclick=showPlaylist("+ playlist.id +") >"+playlist.title+"</p>"
-        artist = "<p class=\"track-artist\" id=artist-"+ playlist.user_id + " onclick=showUser("+ track.user_id +") >by "+playlist.user.username+"</p>"
+        artist = "<p class=\"track-artist\" id=artist-"+ playlist.user_id + " onclick=showUser("+ playlist.user_id +") >by "+playlist.user.username+"</p>"
         end = "</div>"
         return begin + title + artist + end;
     }

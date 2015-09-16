@@ -79,8 +79,20 @@ function parseUrl() {
     url = window.location.pathname.split("/");
     console.log(url)
     switch (url[1]) {
-        case "user":
-            displayUserFav(url[2]);
+        case "users":
+            nav.show();
+            nav.searchMode();
+            getUser(url[2], res.user);
+            switch (url[3]) {
+                case "tracks":
+                    break;
+                case "playlists":
+                    document.getElementById('get-fav').className = "";
+                    document.getElementById("get-tracks").className = "";
+                    document.getElementById("get-playlist").className = "header-selected";
+                    getUserPlaylists(url[2], ser.displayPlaylists);
+                    break;
+            }
             break;
         case "track":
             playFromId(url[2]);
@@ -88,7 +100,14 @@ function parseUrl() {
         case "search":
             nav.show();
             nav.searchMode();
-            getTracks(url[2], res.search);
+            getTracks(search, res.search);
+            switch (url[2]) {
+                case "users":
+                    document.getElementById('get-tracks').className = "";
+                    document.getElementById("get-artists").className = "header-selected";
+                    getUsers(document.getElementById("search").value, ser.displayUsers);
+                    break;
+            }
     }
 }
 
@@ -116,8 +135,19 @@ function toggleFullScreen() {
 
 function showAbout() {
     document.getElementById("about").style.display = "inline";
+    nav.hide();
+    toggle.hide();
 }
 
 function closeAbout() {
     document.getElementById("about").removeAttribute('style');
+}
+
+function showNotificationError() {
+    playToggle.play();
+    document.getElementById("error").style.display = "inline";
+}
+
+function hideError (argument) {
+    document.getElementById("error").removeAttribute('style');
 }
