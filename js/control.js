@@ -5,14 +5,18 @@ function PlayToggle() {
 
     this.play = function () {
         this.style.transform="rotate(+45deg)"
+        this.linePlay.style.visibility = "visible"
         this.linePlay.style.stroke = "white"
-        this.linePause.style.stroke = "none"
+        this.linePause.style.stroke = "black"
+        this.linePause.style.visibility = "hidden"
     }
 
     this.pause = function () {
+        this.linePause.style.visibility = "visible"
         this.style.transform="rotate(0deg)"
-        this.linePlay.style.stroke = "none"
+        this.linePlay.style.stroke = "black"
         this.linePause.style.stroke ="white"
+        this.linePlay.style.visibility = "hidden"
     }
 }
 
@@ -26,6 +30,12 @@ function togglePlay(event) {
     } else {
         playToggle.play();
     }
+}
+
+function onClickProgress(event) {
+    bar = document.getElementById("progress-bar");
+    newTime = audio.player.duration * ((event.pageX - bar.offsetLeft) / bar.clientWidth);
+    audio.player.currentTime = newTime;
 }
 
 function updateTimeAudio() {

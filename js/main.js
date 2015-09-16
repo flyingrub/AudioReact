@@ -113,3 +113,11 @@ function toggleFullScreen() {
         }
     }
 }
+
+function showAbout() {
+    document.getElementById("about").style.display = "inline";
+}
+
+function closeAbout() {
+    document.getElementById("about").removeAttribute('style');
+}

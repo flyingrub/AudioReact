@@ -55,7 +55,7 @@ function NavSearch() {
 
     this.searchMode = function () {
         this.style.borderLeft = "1px solid #616161";
-        this.style.margin = "0em 35em";
+        this.style.margin = "0em 25%";
         this.input.style.marginLeft = "2.5em";
         this.closeButton.style.display = "inline"
     }
@@ -109,6 +109,9 @@ function Result() {
     this.displayTracks = function(tracks) {
         var content = "";
         var counter = 0;
+        if (tracks.length == 0) {
+            content += noResultToHtml("tracks")
+        }
         for (var track of tracks) {
             content += trackToHtml(track, counter);
             counter++;
@@ -116,9 +119,16 @@ function Result() {
         document.getElementById('result-data').innerHTML = content;
     }
 
+    function noResultToHtml(type) {
+        first = "<div id=no-result>No "+ type + " found...</div>"
+        br = "</br>"
+        end = "Check the spelling, or try a different search.</div>"
+        return first;
+    }
+
     function trackToHtml(track, counter) {
         begin = "<div id=element-"+track.id + " class=\"result-element\">"
-        title = "<p class=\"track-title\" id=title-"+track.id+" onclick=playFromTrackList("+ counter +") >"+track.title+"</p>"
+        title = "<p class=\"track-title\" id=title-"+track.id+" onclick=playFromNewTrackList("+ counter +") >"+track.title+"</p>"
         artist = "<p class=\"track-artist\" id=artist-"+ track.user_id + " onclick=showUser("+ track.user_id +") >by "+track.user.username+"</p>"
         end = "</div>"
         return begin + title + artist + end;
@@ -126,6 +136,9 @@ function Result() {
 
     this.displayUsers = function(users) {
         var content = "";
+        if (users.length == 0) {
+            content += noResultToHtml("users")
+        }
         for (var user of users) {
             content += userToHtml(user);
         }
@@ -142,6 +155,9 @@ function Result() {
 
     this.displayPlaylists = function(playlists) {
         var content = "";
+        if (playlists.length == 0) {
+            content += noResultToHtml("playlists")
+        }
         for (var playlist of playlists) {
             content += playlistToHtml(playlist);
         }

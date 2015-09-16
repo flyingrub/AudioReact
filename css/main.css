@@ -53,9 +53,8 @@ nav section {
 
 /* SEARCH NAV */
 #nav-search {
-    flex: 4;
+    flex: 3.5;
     display: flex;
-    /*transition: all 0.4s;*/
 }
 
 #nav-search input {
@@ -80,19 +79,20 @@ nav section {
     cursor: pointer;
 }
 
-/* INFO NAV */
+/* ARTIST INFO NAV */
 #nav-artist-info {
-    flex: 2;
+    flex: 2.5;
     padding: 0.8em 3em;
 }
 
 #nav-artist-info p {
+    overflow: hidden;
     display: inline-block;
-    width: 100%
-    height: 1em;
+    width: 100%;
+    max-height: 1em;
     margin: 0;
     cursor: pointer;
-    text-overflow: ellipsis;
+    text-overflow: clip;
 }
 
 #track-info {
@@ -108,6 +108,7 @@ nav section {
 
 /* TOGGLE NAV */
 #nav-player-toggle {
+    min-width: 200px;
     flex: 3;
     text-align: center;
     padding: 0.5em 0;
@@ -121,16 +122,16 @@ nav section {
 }
 
 
-/* INFO NAV */
+/* PLAYER INFO NAV */
 #nav-player-info {
-    flex: 5.5;
+    flex: 6;
     display: flex;
+    padding: 1em 1em;
 }
 
 #nav-player-info p {
-    display: inline-block;
     flex: 1;
-    margin-top: 0.35em;
+    margin: 0.35em 1em;
     text-align: center;
     height: 2em;
     font-family: Circular;
@@ -148,18 +149,25 @@ nav section {
     cursor: pointer;
 }
 
-#progress-bar > div {
+#progress {
    background-color: white;
-   width: 40%; /* Adjust with JavaScript */
+   width: 0%;
    height: 100%;
 }
 
-/* VOLUME NAV */
-#nav-player-volume {
-    -webkit-flex: 0.5;
-    -ms-flex: 0.5;
-    flex: 0.5;
+/* ABOUT NAV */
+#nav-about {
+    flex: 1.5;
     border-right:  none;
+    text-align: center;
+    padding: 0.5em 0;
+}
+
+#nav-about svg {
+    height: 3em;
+    margin: 0em 0.3em;
+    cursor: pointer;
+    transition: all 0.5s;
 }
 
 #volume {
@@ -180,6 +188,14 @@ nav section {
     fill: black;
 }
 
+#line-play {
+    transition: stroke 0.2s;
+}
+
+#line-pause {
+    transition: stroke 0.2s;
+}
+
 /* RESULT DIV */
 #result-wrapper {
     color: white;
@@ -196,7 +212,8 @@ nav section {
 #result-container {
     width: 100%;
     overflow-y: auto;
-    margin: 0em 35em;
+    margin: 0em 25%;
+    min-width: 380px;
     border-right:  1px solid #616161;
     border-left:  1px solid #616161;
 }
@@ -218,8 +235,16 @@ nav section {
     font-weight: bold;
 }
 
+#no-result {
+    text-align: center;
+    padding: 2em 2em;
+    font-style: normal;
+    font-size: 20px;
+    color: #bdbdbd;
+    font-family: Roboto;
+}
+
 #title {
-    /*text-align: center;*/
     color: white;
     font-size: 2em;
     font-weight: bold;
@@ -264,15 +289,52 @@ nav section {
     color: grey;
 }
 
+/* About View Container */
+#about {
+    display: none;
+    padding: 2em;
+    background-color: rgba(0,0,0, 0.9);
+    border: 1px solid white;
+    max-width: 500px;
+    text-align: center;
+    font-family: Roboto;
+    letter-spacing: 1px;
 
+    position:absolute;
+    color:#fff;
+    top:50%;
+    left:50%;
+    padding:15px;
+    transform: translate(-50%,-50%);
+}
 
-/* OLD */
+#about-logo {
+    height: 5em;
+    margin: 0em 0.3em;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+#close-about {
+    margin-top: 0.25em;
+    height: 1.5em;
+    width: 1.5em;
+    margin-left: 1em;
+    cursor: pointer;
+}
+
+#about a {
+    color: #03a9f4;
+}
+
+/* Canvas Container */
 #container {
     z-index: 1;
     width: 100%;
     height: 100%;
 }
 
+/* Mobile View Container */
 #mobile {
     width: 100%;
     height: 20%;
