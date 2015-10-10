@@ -238,7 +238,11 @@ function toggleNav(event) {
 function inputClick(event) {
     if (nav.isInNormalMode()) {
         nav.searchMode();
-        getTracks(document.getElementById("search").value, res.search);
+        var search = document.getElementById("search").value;
+        console.log(search);
+        if (search != "") {
+            getTracks(search, res.search);
+        }
     }
 }
 
@@ -264,7 +268,7 @@ function showCurrentPlaylist() {
 }
 
 function inputKeyFilter(event) {
-    var search = document.getElementById("search").value
+    var search = document.getElementById("search").value;
     if (event.key == 'Enter') {
         event.preventDefault();
         getTracks(search, res.search);
