@@ -12,56 +12,9 @@
         <!-- Html  -->
         <nav id="navbar">
 
-            <section id="nav-search">
-                <input id="search" type="text" placeholder="Search" onclick="inputClick(event)" onkeypress="inputKeyFilter(event)">
-
-                <svg id="close-search" fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="closeSearch()">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                    <path d="M0 0h24v24H0z" fill="none"/>
-                </svg>
-            </section>
-
             <section id="nav-artist-info">
                 <p id="playing-from" onclick="">Not playing...</p><br>
                 <p id="track-info">No tracks :(</p>
-            </section>
-
-            <section id="nav-player-toggle">
-                <svg id="play-previous" onclick="playPreviousFromTracklist()" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="20" y1="20" x2="10" y2="12" style="stroke:white;stroke-width:1" />
-                    <line x1="20" y1="4" x2="10" y2="12" style="stroke:white;stroke-width:1" />
-                </svg>
-
-                <svg id="play-toggle" onclick="togglePlay(evt)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <polyline id="line-pause" points="12,4 12,20" style="stroke-width:1" />
-                    <polyline id="line-play" points="4,4 20,20" style="stroke-width:1" />
-                    <polygon points="4,4 4,20 20,20 20,4" style="stroke:white;stroke-width:1;fill:none;" />
-                </svg>
-
-                <svg id="play-next" onclick="playNextFromTracklist()" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="4" y1="4" x2="14" y2="12" style="stroke:white;stroke-width:1" />
-                    <line x1="4" y1="20" x2="14" y2="12" style="stroke:white;stroke-width:1" />
-                </svg>
-            </section>
-
-            <section id="nav-player-info">
-                <p id="current-time">0:00</p>
-                <div id="progress-bar" onclick="onClickProgress(event)">
-                  <div id="progress"></div>
-                </div>
-                <p id="remaining-time">-0:00</p>
-            </section>
-
-            <section id="nav-about">
-                <svg id="nav-about-logo" fill="none" onclick="showAbout()" viewBox="0 0 54 24" xmlns="http://www.w3.org/2000/svg">
-                    <polyline id="logo-A1" points="4,20 12,4 12,20" style="stroke:white;stroke-width:1" />
-                    <polyline id="logo-L" points="20,4 20,20" style="stroke:white;stroke-width:1" />
-                    <polyline id="logo-E-1" points="26,5 36,5" style="stroke:white;stroke-width:1" />
-                    <polyline id="logo-E-2" points="26,12 36,12" style="stroke:white;stroke-width:1" />
-                    <polyline id="logo-E-3" points="26,19 36,19" style="stroke:white;stroke-width:1" />
-                    <polyline id="logo-A2" points="50,20 42,4 42,20" style="stroke:white;stroke-width:1" />
-                    <polyline id="logo-_" points="0,12 54,12" style="stroke:none;stroke-width:1" />
-                </svg>
             </section>
 
         </nav>
@@ -72,14 +25,6 @@
             </svg>
             <div id="container" tabindex="0"></div>
         </main>
-
-        <main id="result-wrapper">
-            <div id="result-container">
-                <div id="result-header"></div>
-                <div id="result-data"></div>
-            </div>
-        </main>
-
 
         <main id="about">
             <svg id="about-logo" fill="none" viewBox="0 0 54 24" xmlns="http://www.w3.org/2000/svg">
@@ -129,11 +74,8 @@
         <script src="/js/postprocessing/MaskPass.js"></script>
 
         <!-- AudioReact Script -->
-        <script src="/js/control.js"></script>
-        <script src="/js/scdl.js"></script>
         <script src="/js/audio.js"></script>
         <script src="/js/visual.js"></script>
-        <script src="/js/ui.js"></script>
         <script src="/js/main.js"></script>
 
 
