@@ -10,19 +10,10 @@
     </head>
     <body>
         <!-- Html  -->
-        <nav id="navbar">
-
-            <section id="nav-artist-info">
-                <p id="playing-from" onclick="">Not playing...</p><br>
-                <p id="track-info">No tracks :(</p>
-            </section>
-
-        </nav>
 
         <main id="anim">
-            <svg id="toggle-nav" onclick="toggleNav(evt)" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="7,8 12,16 17,8" style="stroke:white;stroke-width:1" />
-            </svg>
+            <p id="track-info">No info on the current track... :(</p>
+            <p id="nav-about" onclick="showAbout()" >About</p>
             <div id="container" tabindex="0"></div>
         </main>
 
@@ -36,9 +27,8 @@
                 <polyline id="logo-A2" points="50,20 42,4 42,20" style="stroke:white;stroke-width:1" />
                 <polyline id="logo-_" points="0,12 54,12" style="stroke:none;stroke-width:1" />
             </svg>
-            <p>The original idea was to play with webAudio and learn javascript (it's my first site that use it.)</p>
-            <p>This website is open source, fill free to contribute ;)</p>
-            <p>It use the soundcloud API to provide sounds.</p>
+            <p>This website is a special version of alea.xyz</p>
+            <p>It keep the same animation but use radio PBB as audio source.</p>
             <p><b>Controls :</b></br>F: Fullscreen</br>→: Next track</br>←: Previous track</br>Space: Toggle play &amp; pause</p>
             <p><b>Made with &hearts; by <a target="_blank" href="https://github.com/flyingrub">flyingrub</a></b></p>
             <svg id="close-about" fill="#FFFFFF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" onclick="closeAbout()">

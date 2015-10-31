@@ -21,7 +21,7 @@ body {
     overflow: hidden;
     color: white;
     background-color: black;
-    font-family: Circular, helvetica;
+    font-family: Roboto;
     width: 100%;
     height: 100%;
 }
@@ -31,263 +31,45 @@ canvas {
     height: 100%;
 }
 
-nav {
-    background-color: rgba(0,0,0, 0.5);
-    transition: top 0.5s;
-    z-index: 3;
-    display: flex;
-    top: -4em;
-    left: 0;
-    position: fixed;
-    height: 4em;
-    overflow: hidden;
-    width: 100%;
-    border-bottom: 1px solid #e3f2fd;
-}
-
-nav section {
-    padding: 1em 3em;
-    height: calc(100% -1em);
-    border-right:  1px solid #616161;
-}
-
-/* SEARCH NAV */
-#nav-search {
-    flex: 3.5;
-    display: flex;
-}
-
-#nav-search input {
-    font-family: Roboto;
-    letter-spacing: 1px;
-    height: 2em;
-    margin-left: 1em;
-    padding-left: 1em;
-    font-size: 14px;
-    border: none;
-    outline: none;
-    border-radius: 2px;
-    flex: 1;
-}
-
-#close-search {
-    margin-top: 0.25em;
-    height: 1.5em;
-    width: 1.5em;
-    display: none;
-    margin-left: 1em;
-    cursor: pointer;
-}
-
-/* ARTIST INFO NAV */
-#nav-artist-info {
-    flex: 2.5;
-    padding: 0.8em 3em;
-}
-
-#nav-artist-info p {
-    overflow: hidden;
-    display: inline-block;
-    width: 100%;
-    max-height: 1em;
+p {
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 12px;
+    padding-top: 1em;
     margin: 0;
-    cursor: pointer;
-    text-overflow: clip;
 }
 
 #track-info {
-    font-size: 14px;
-    font-weight: bold;
-}
-
-#playing-from {
-    letter-spacing: 1px;
-    color: #bdbdbd;
-    font-size: 12px;
-}
-
-/* TOGGLE NAV */
-#nav-player-toggle {
-    min-width: 200px;
-    flex: 3;
-    text-align: center;
-    padding: 0.5em 0;
-}
-
-#nav-player-toggle svg {
-    height: 3em;
-    margin: 0em 0.3em;
-    cursor: pointer;
-    transition: all 0.5s;
-}
-
-
-/* PLAYER INFO NAV */
-#nav-player-info {
-    flex: 6;
-    display: flex;
-    padding: 1em 1em;
-}
-
-#nav-player-info p {
-    flex: 1;
-    margin: 0.35em 1em;
-    text-align: center;
-    height: 2em;
-    font-family: Circular;
-}
-
-#progress-bar {
     display: inline-block;
-    margin: calc(0.5em + 4px) 0em;
-    flex: 5;
-    height: 2px;
-    background-color: black;
-    border-color: white;
-    border-style: solid;
-    border-width: 1px;
-    cursor: pointer;
+    padding-left: 2em;
 }
 
-#progress {
-   background-color: white;
-   width: 0%;
-   height: 100%;
-}
-
-/* ABOUT NAV */
 #nav-about {
-    flex: 1.5;
-    border-right:  none;
-    text-align: center;
-    padding: 0.5em 0;
-}
-
-#nav-about svg {
-    height: 3em;
-    margin: 0em 0.3em;
-    cursor: pointer;
-    transition: all 0.5s;
-}
-
-#volume {
-    height: 2em;
-}
-
-/* TOGGLE NAV */
-#toggle-nav {
-    z-index: 3;
-    position: fixed;
-    top : 0.5em;
-    left: 0.5em;
-    height: 3em;
-    width: 3em;
-    margin: 0;
-    cursor: pointer;
-    transition: all 0.5s;
-    fill: black;
-}
-
-#line-play {
-    transition: stroke 0.2s;
-}
-
-#line-pause {
-    transition: stroke 0.2s;
-}
-
-/* RESULT DIV */
-#result-wrapper {
-    color: white;
-    background-color: rgba(0,0,0, 0.5);
-    display: none;
-    z-index: 2;
-    position:fixed;
-    top: 4em;
-    left: 0em;
-    width: 100%;
-    height: 100%;
-}
-
-#result-container {
-    width: 100%;
-    overflow-y: auto;
-    margin: 0em 25%;
-    min-width: 380px;
-    border-right:  1px solid #616161;
-    border-left:  1px solid #616161;
-}
-
-#result-header {
-    margin: 0;
-    flex: 1;
-    padding: 0.5em 0em;
-    border-bottom: 1px solid #e3f2fd;
-}
-
-#result-header p {
     display: inline-block;
-    padding-left: 3em;
-    cursor: pointer;
-}
-
-.header-selected {
-    font-weight: bold;
-}
-
-#no-result {
-    text-align: center;
-    padding: 2em 2em;
-    font-style: normal;
-    font-size: 20px;
-    color: #bdbdbd;
-    font-family: Roboto;
-}
-
-#title {
-    color: white;
-    font-size: 2em;
-    font-weight: bold;
-    font-family: Roboto;
-    margin: 0;
-    padding: 0.5em 1.5em;
-}
-
-#result-data {
-    width: 100%;
-}
-#result-data p {
-    cursor: pointer;
-}
-
-.result-element {
-    padding: 0.5em 2em;
-    border-bottom: 1px solid #616161;
-}
-
-.track-artist {
-    margin: 0;
-    color: grey;
-}
-
-.track-title {
-    margin: 0;
-}
-
-.selected-track {
-    font-weight: bold;
-}
-
-.user-name {
-    margin: 0;
-    display: inline-block;
-}
-
-.user-followers {
     float: right;
-    margin: 0;
-    color: grey;
+    padding-right: 2em;
+    cursor: pointer;
 }
+/* ERROR */
+#error {
+    display: none;
+    cursor: pointer;
+    z-index: 10;
+    text-align: center;
+    font-family: Roboto;
+    letter-spacing: 1px;
+    background-color: rgba(0,0,0, 0.9);
+    padding: 2em;
+    width: 100%;
+    position:absolute;
+    color:#fff;
+    top:50%;
+    left:50%;
+    padding:15px;
+    transform: translate(-50%,-50%);
+    border-bottom: 1px solid #e3f2fd;
+    border-top: 1px solid #e3f2fd;
+}
+
 
 /* About View Container */
 #about {
@@ -325,27 +107,6 @@ nav section {
 
 #about a {
     color: #03a9f4;
-}
-
-/* ERROR */
-#error {
-    display: none;
-    cursor: pointer;
-    z-index: 10;
-    text-align: center;
-    font-family: Roboto;
-    letter-spacing: 1px;
-    background-color: rgba(0,0,0, 0.9);
-    padding: 2em;
-    width: 100%;
-    position:absolute;
-    color:#fff;
-    top:50%;
-    left:50%;
-    padding:15px;
-    transform: translate(-50%,-50%);
-    border-bottom: 1px solid #e3f2fd;
-    border-top: 1px solid #e3f2fd;
 }
 
 /* Canvas Container */

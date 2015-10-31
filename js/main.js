@@ -16,7 +16,7 @@ function canvasKeyfilter(event) {
         event.preventDefault();
         switch (event.key) {
             case " ":
-                togglePlay();
+                audio.toggle();
                 break;
             case "f":
                 toggleFullScreen();
@@ -26,7 +26,7 @@ function canvasKeyfilter(event) {
         event.preventDefault();
         switch (event.keyCode) {
             case 32:
-                togglePlay();
+                audio.toggle();
                 break;
             case 102:
                 toggleFullScreen();
@@ -74,8 +74,6 @@ function toggleFullScreen() {
 
 function showAbout() {
     document.getElementById("about").style.display = "inline";
-    nav.hide();
-    toggle.hide();
 }
 
 function closeAbout() {
@@ -83,10 +81,9 @@ function closeAbout() {
 }
 
 function showNotificationError() {
-    playToggle.play();
     document.getElementById("error").style.display = "inline";
 }
 
-function hideError (argument) {
+function hideError() {
     document.getElementById("error").removeAttribute('style');
 }
