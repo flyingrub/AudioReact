@@ -7,7 +7,7 @@ if (isMob()) {
     var player = document.getElementById('player')
     audio.init(player);
     visualInit()
-    audio.load("http://onde.xyz/pbb");
+    audio.load("https://onde.xyz/pbb");
 }
 
 function canvasKeyfilter(event) {
